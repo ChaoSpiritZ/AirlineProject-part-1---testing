@@ -1,0 +1,74 @@
+﻿<Window x:Class="AirlineProjectWPF.WPF53Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AirlineProjectWPF"
+        mc:Ignorable="d"
+        Title="WPF53Window" Height="650" Width="800">
+    <Window.Resources>
+        <local:WPF53WindowViewModel x:Key="vm"/>
+        <local:TicketValueConverter x:Key="TVC"/>
+        <DataTemplate x:Key="MuhTemplate">
+            <Border BorderThickness="1" BorderBrush="Black" Margin="2">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="20" Text="ID:" Margin="20 0 0 0"/>
+                        <TextBlock FontSize="20" Text="{Binding ID}"/>
+                        <TextBlock FontSize="20" Text="From:" Margin="20 0 0 0"/>
+                        <TextBlock FontSize="20" Text="{Binding OriginCountryCode}"/>
+                        <TextBlock FontSize="20" Text="To:" Margin="20 0 0 0"/>
+                        <TextBlock FontSize="20" Text="{Binding DestinationCountryCode}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="20" Text="Dept:" Margin="20 0 0 0"/>
+                        <TextBlock FontSize="15" Text="{Binding DepartureTime}"/>
+                        <TextBlock FontSize="20" Text="Landing:" Margin="20 0 0 0"/>
+                        <TextBlock FontSize="15" Text="{Binding LandingTime}"/>
+                        <TextBlock FontSize="20" Text="Remaining Tickets:" Margin="20 0 0 0"/>
+                        <TextBlock FontSize="20" Text="{Binding RemainingTickets}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <TextBox x:Name="SearchTxtBx" FontSize="30" Width="400" Margin="100 0 20 0"/>
+            <Button Content="Search" FontSize="30" Command="{Binding SearchCommand, Source={StaticResource vm}}" CommandParameter="{Binding Text, ElementName=SearchTxtBx}"/>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Top">
+            <ListBox ItemsSource="{Binding Flights, Source={StaticResource vm}}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock FontSize="20" Text="{Binding}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <ContentPresenter Content="{Binding RandomFlight}"  ContentTemplate="{StaticResource MuhTemplate}"/>
+            <ContentPresenter Content="{Binding RandomFlight}"  ContentTemplate="{StaticResource MuhTemplate}"/>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0 20 0 0">
+            <TextBox x:Name="ShowTxtBx" FontSize="30" Width="400" Margin="100 0 20 0"/>
+            <Button Content="Show" FontSize="30" Command="{Binding ShowCommand, Source={StaticResource vm}}" CommandParameter="{Binding Text, ElementName=ShowTxtBx}"/>
+        </StackPanel>
+        <StackPanel DataContext="{StaticResource vm}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontSize="20" Text="ID:" Margin="20 0 0 0"/>
+                <TextBlock FontSize="20" Text="{Binding ShownFlight.ID}"/>
+                <TextBlock FontSize="20" Text="From:" Margin="20 0 0 0"/>
+                <TextBlock FontSize="20" Text="{Binding ShownFlight.OriginCountryCode}"/>
+                <TextBlock FontSize="20" Text="To:" Margin="20 0 0 0"/>
+                <TextBlock FontSize="20" Text="{Binding ShownFlight.DestinationCountryCode}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontSize="20" Text="Dept:" Margin="20 0 0 0"/>
+                <TextBlock FontSize="15" Text="{Binding ShownFlight.DepartureTime}"/>
+                <TextBlock FontSize="20" Text="Landing:" Margin="20 0 0 0"/>
+                <TextBlock FontSize="15" Text="{Binding ShownFlight.LandingTime}"/>
+                <TextBlock FontSize="20" Text="Remaining Tickets:" Margin="20 0 0 0"/>
+                <TextBlock FontSize="20" Text="{Binding ShownFlight.RemainingTickets, Converter={StaticResource TVC}}" />
+            </StackPanel>
+        </StackPanel>
+    </DockPanel>
+</Window>
